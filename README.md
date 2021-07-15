@@ -55,6 +55,7 @@ pretrained_model_name_or_path: Union[str, os.PathLike],
 - `DatasetDict()` : Creates a dictionary of datasets, please use this instead of a normal dictionary as it includes a lot more usable functionss
 - `DataCollatorForLanguageModeling()` : This is the main class we try to change, it fills a tensor the same shape of inputs with a prpability 0->1. Then applies a Bernolli function to the tensor. This produces a new boolean tensor with random True values at different indeces. Before it applies the bernolli function it reduces the probability of the indices of special_tokens to zero. We make use of this by reducing the probability of letters as well to zero.
 - `create_diacritization_variants()` : Creates a random number of variants of any string with randomly stripped diacritizations. Each new variant is more stripped down.
+- `encode()` : Takes in a string and returns input_ids and attention_mask. These values are then used as inputs for the model.
 
 ### The model
 - `RobertaForMaskedLM()` : Creates an instance of Roberta model that extends nn.module from pytorch, you can call the class using 
