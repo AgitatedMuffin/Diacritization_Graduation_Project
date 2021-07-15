@@ -32,10 +32,10 @@ Luckily this entire loop is implemented by Hugging face in the trainer class. We
 - datasets == 1.7.0
 - pandas == 1.2.4
 
-## Classes And Function
+## Classes And Functions
 
 ### Tokenizer
-`ByteLevelBPETokenizer()` : Creates a tokenizer class with 
+- `ByteLevelBPETokenizer()` : Creates a tokenizer class with 
 ```python
 .add_token(tokens: List[Union[str, tokenizers.AddedToken]])
 ```
@@ -46,18 +46,18 @@ Luckily this entire loop is implemented by Hugging face in the trainer class. We
     show_progress: bool = True,
     special_tokens: List[Union[str, tokenizers.AddedToken]] = [],)
 ```
-`RobertaTokenizerFast.from_pretrained()` : Creates a spicific tokenizer class for roberta tokenizer with
+- `RobertaTokenizerFast.from_pretrained()` : Creates a spicific tokenizer class for roberta tokenizer with
 ```python
 pretrained_model_name_or_path: Union[str, os.PathLike],
 ```
 ### DataSets and Collators
-`load_dataset()` : Loads a Dataset from a file
-`DatasetDict()` : Creates a dictionary of datasets, please use this instead of a normal dictionary as it includes a lot more usable functionss
-`DataCollatorForLanguageModeling()` : This is the main class we try to change, it fills a tensor the same shape of inputs with a prpability 0->1. Then applies a Bernolli function to the tensor. This produces a new boolean tensor with random True values at different indeces. Before it applies the bernolli function it reduces the probability of the indices of special_tokens to zero. We make use of this by reducing the probability of letters as well to zero.
-`create_diacritization_variants()` : Creates a random number of variants of any string with randomly stripped diacritizations. Each new variant is more stripped down.
+- `load_dataset()` : Loads a Dataset from a file
+- `DatasetDict()` : Creates a dictionary of datasets, please use this instead of a normal dictionary as it includes a lot more usable functionss
+- `DataCollatorForLanguageModeling()` : This is the main class we try to change, it fills a tensor the same shape of inputs with a prpability 0->1. Then applies a Bernolli function to the tensor. This produces a new boolean tensor with random True values at different indeces. Before it applies the bernolli function it reduces the probability of the indices of special_tokens to zero. We make use of this by reducing the probability of letters as well to zero.
+- `create_diacritization_variants()` : Creates a random number of variants of any string with randomly stripped diacritizations. Each new variant is more stripped down.
 
 ### The model
-`RobertaForMaskedLM()` : Creates an instance of Roberta model that extends nn.module from pytorch, you can call the class using 
+- `RobertaForMaskedLM()` : Creates an instance of Roberta model that extends nn.module from pytorch, you can call the class using 
 ```python
 RobertaForMaskedLM(
 config (:class:`~transformers.RobertaConfig`): Model configuration class with all the parameters of the
@@ -70,3 +70,26 @@ or using
 ```python
 RobertaForMaskedLM.from_pretrained(pretrained_model_name_or_path: Union[str, os.PathLike, NoneType])
 ```
+
+### Trainer
+`Trainer()` : Trainer is a simple but feature-complete training and eval loop for PyTorch, optimized for 🤗 Transformers. You can fully customize the training parameters by setting a new compute_metric and optimizer.
+```python
+Trainer(
+    model: Union[transformers.modeling_utils.PreTrainedModel, torch.nn.modules.module.Module] = None,
+    args: transformers.training_args.TrainingArguments = None,
+    data_collator: Union[DataCollator, NoneType] = None,
+    train_dataset: Union[torch.utils.data.dataset.Dataset, NoneType] = None,
+    eval_dataset: Union[torch.utils.data.dataset.Dataset, NoneType] = None,
+    tokenizer: Union[transformers.tokenization_utils_base.PreTrainedTokenizerBase, NoneType] = None,
+    model_init: Callable[[], transformers.modeling_utils.PreTrainedModel] = None,
+    compute_metrics: Union[Callable[[transformers.trainer_utils.EvalPrediction], Dict], NoneType] = None,
+    callbacks: Union[List[transformers.trainer_callback.TrainerCallback], NoneType] = None,
+    optimizers: Tuple[torch.optim.optimizer.Optimizer, torch.optim.lr_scheduler.LambdaLR] = (None, None),
+)
+```
+
+## References:
+
+- https://pytorch.org/tutorials/beginner/pytorch_with_examples.html
+- https://huggingface.co/transformers/training.html
+- https://huggingface.co/transformers/model_doc/roberta.html#robertaformaskedlm
