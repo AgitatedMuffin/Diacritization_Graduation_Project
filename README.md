@@ -89,6 +89,21 @@ Trainer(
 )
 ```
 
+## Testing
+All testing functions can be found in the utils module most of them are private and the only one you need is Diacritize which tackes a small sentence and returns the diacritized version of it.
+
+However, in order, here you can find documentation for each function if you there's something you can't understand.
+1. `_remove_diac :` Takes a string turns it into an array of chars and filters out diacritics then reassembles the string.
+2. `_create_mask_arr: ` Takes each string and creates a number of duplicates, each duplicate inserts a <mask> token after a letter.
+3. `_fill_mask_arr: ` Gets the array created by the previous function and passes it through the model to fill the mask in each sentence. Notice that here you can tune which predictions you want. The model only returns diacritics and spaces, in our implementation we ignored the spaces.
+4. `_create_seq_from_fills: ` Here we create a list of diacritics from the predictions that can then be used to fill in the spaces.
+5. `_mix_letters_and_diacs: ` This inserts a prediction after each letter.
+    
+Notice that to get a decent prediction you can pass the sentence through the model 2 or 3 times
+    this is done internally in the diacritize model by giving it the passes parameter. Normally 3 times is enough but you can play around with the number.
+    
+    
+    
 ## References:
 
 - https://pytorch.org/tutorials/beginner/pytorch_with_examples.html
